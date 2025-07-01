@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Webhook com Delay</title>
+</head>
+<body>
+  <h2>Enviar Requisição com Delay</h2>
+  <button onclick="enviar()">Enviar</button>
+  <p id="resposta"></p>
+
+  <script>
+    function enviar() {
+      document.getElementById("resposta").innerText = "Aguardando resposta...";
+      fetch("/webhook", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({mensagem: "teste"})
+      })
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById("resposta").innerText = "Resposta: " + data.mensagem;
+      });
+    }
+  </script>
+</body>
+</html>
