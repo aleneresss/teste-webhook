@@ -1,17 +1,21 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify
 import time
 
 app = Flask(__name__)
 
-@app.route('/')
-def index():
-    return render_template('index.html')
-
 @app.route('/webhook', methods=['POST'])
 def webhook():
-    delay = 5  # segundos
+    data = request.json
+    delay = int(data.get("delay", 5))
+
+    print(f"Iniciando espera de {delay} segundos...")
     time.sleep(delay)
-    return jsonify({"status": "ok", "mensagem": f"Aguardou {delay} segundos"}), 200
+    print("Tempo finalizado. Respondendo...")
+
+    return jsonify({
+        "status": "ok",
+        "mensagem": f"Timer de {delay} segundos concluído."
+    }), 200
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=3000)
+    app.run(host='0.0.0.0', port=8000)
